@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criptografia Online</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function enviarFormulario(event) {
+            event.preventDefault(); // Previne o envio do formulário padrão
+
+            var formData = new FormData(document.getElementById('crypto-form'));
+
+            fetch('criptografia.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('resultado').innerHTML = `<pre>${data}</pre>`;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Criptografia e Descriptografia</h2>
+        <form id="crypto-form" method="POST" onsubmit="enviarFormulario(event)">
+            <label for="acao">Escolha uma ação:</label><br>
+            <div class="radio-group">
+                <input type="radio" id="criptografar" name="acao" value="criptografar" required>
+                <label for="criptografar">Criptografar</label>
+            </div>
+            <div class="radio-group">
+                <input type="radio" id="descriptografar" name="acao" value="descriptografar" required>
+                <label for="descriptografar">Descriptografar</label>
+            </div><br>
+
+            <label for="chave">Chave de Criptografia:</label><br>
+            <input type="text" id="chave" name="chave" required><br><br>
+
+            <label for="frase">Frase/Texto:</label><br>
+            <textarea id="frase" name="frase" required></textarea><br><br>
+
+            <button type="submit">Executar</button>
+        </form>
+        <div id="resultado"></div>
+    </div>
+</body>
+</html>
